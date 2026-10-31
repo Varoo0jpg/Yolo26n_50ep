@@ -715,7 +715,8 @@ class TrafficGUI(ctk.CTk):
     def capture_research_sample(self):
         """Ambil snapshot setiap detik untuk setiap lajur saat perekaman aktif."""
         if self.research_recording and hasattr(self, "kumpulan_panel"):
-            now = datetime.now().astimezone()\n            stamp = now.isoformat(timespec="seconds")
+            now = datetime.now().astimezone()
+            stamp = now.isoformat(timespec="seconds")
             for lajur in DAFTAR_LAJUR:
                 panel = self.kumpulan_panel[lajur]
                 counts = {}
@@ -736,6 +737,7 @@ class TrafficGUI(ctk.CTk):
                 )
                 record = {
                     "timestamp": stamp,
+                    "time": now.strftime("%H:%M:%S"),
                     "lane": lajur,
                     "data_source": (
                         "kamera" if self.detektor is not None and lajur in self.detektor.caps

@@ -1,0 +1,6 @@
+﻿metric,value
+empty_label_images_total,1128
+images_with_missing_label_file,0
+empty_labels_train,923
+empty_labels_val,205
+status_UNREVIEWED,1128

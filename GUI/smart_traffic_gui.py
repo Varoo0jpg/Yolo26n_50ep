@@ -324,7 +324,7 @@ class PanelInputLajur(ctk.CTkFrame):
             ).grid(row=baris_kelas * 2, column=kolom_kelas, padx=2, pady=1)
 
             kotak_teks = ctk.CTkEntry(grid_input, width=45, justify="center")
-            kotak_teks.insert(0, str(random.randint(0, 10)))
+            kotak_teks.insert(0, "0")
             kotak_teks.grid(row=baris_kelas * 2 + 1, column=kolom_kelas, padx=2, pady=2)
             self.kolom_input[jenis] = kotak_teks
 
@@ -671,7 +671,7 @@ class TrafficGUI(ctk.CTk):
         table_frame.grid_columnconfigure(0, weight=1)
 
         self.research_columns = (
-            "timestamp", "lane", *BOBOT_KENDARAAN.keys(),
+            "timestamp", "lane", "data_source", *BOBOT_KENDARAAN.keys(),
             "total_vehicles", "weighted_score", "signal_phase", "active_lane"
         )
         self.research_tree = ttk.Treeview(
@@ -680,6 +680,7 @@ class TrafficGUI(ctk.CTk):
         headings = {
             "timestamp": ("Waktu", 145),
             "lane": ("Lajur", 75),
+            "data_source": ("Sumber", 75),
             "Ambulance": ("Ambulance", 85),
             "Bus": ("Bus", 60),
             "Car": ("Car", 60),
@@ -751,6 +752,10 @@ class TrafficGUI(ctk.CTk):
                 record = {
                     "timestamp": stamp,
                     "lane": lajur,
+                    "data_source": (
+                        "kamera" if self.detektor is not None and lajur in self.detektor.caps
+                        else "manual"
+                    ),
                     **counts,
                     "total_vehicles": total,
                     "weighted_score": weighted_score,
@@ -808,7 +813,7 @@ class TrafficGUI(ctk.CTk):
         if not path:
             return
         fields = [
-            "timestamp", "lane", *BOBOT_KENDARAAN.keys(),
+            "timestamp", "lane", "data_source", *BOBOT_KENDARAAN.keys(),
             "total_vehicles", "weighted_score", "signal_phase",
             "active_lane", "green_remaining_seconds", "mode"
         ]
@@ -840,6 +845,7 @@ class TrafficGUI(ctk.CTk):
 
             row = {
                 "lane": lajur,
+                "data_sources": ";".join(sorted({r["data_source"] for r in samples})),
                 "sample_count": len(samples),
                 "observation_duration_seconds": duration_seconds,
                 "mean_vehicles_per_snapshot": round(statistics.mean(totals), 3),
@@ -1229,6 +1235,12 @@ class TrafficGUI(ctk.CTk):
         self.sinkronisasi_tampilan_ui()
 
     def action_acak_input_kendaraan(self):
+        if self.research_recording:
+            messagebox.showwarning(
+                "Perekaman penelitian aktif",
+                "Input acak dinonaktifkan selama perekaman agar data penelitian tidak tercampur data simulasi."
+            )
+            return
         for panel in self.kumpulan_panel.values():
             panel.acak_jumlah_kendaraan()      # lajur berkamera dilewati
         if self.fase_saat_ini == "HIJAU" and self.simulasi_aktif:

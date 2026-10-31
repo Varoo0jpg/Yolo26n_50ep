@@ -23,7 +23,7 @@ repository/
     └── best.pt
 ```
 
-Jika checkpoint berada di lokasi lain, ubah konstanta `MODEL_PATH` di `smart_traffic_gui.py`.
+Jika checkpoint tidak tersedia pada `weights/best.pt`, GUI akan meminta pengguna memilih file `.pt` saat dijalankan. Lokasi khusus juga dapat ditentukan melalui variabel lingkungan `SMART_TRAFFIC_MODEL`.
 
 ## Instalasi dan menjalankan
 

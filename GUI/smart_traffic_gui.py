@@ -69,8 +69,8 @@ def resource_path(nama):
 
 
 # Checkpoint baseline pada repositori Yolo26n_50ep.
-# Struktur yang diharapkan: GUI/smart_traffic_gui.py dan YOLO26n_50ep/weights/best.pt.
-MODEL_PATH = os.environ.get("SMART_TRAFFIC_MODEL", os.path.abspath(resource_path(os.path.join("..", "weights", "best.pt"))))
+# Struktur yang diharapkan: GUI/smart_traffic_gui.py dan Coba/antytet.pt.
+MODEL_PATH = os.environ.get("SMART_TRAFFIC_MODEL", os.path.abspath(resource_path(os.path.join("..", "Coba", "antytet.pt"))))
 CONF = 0.20  # Baseline confidence untuk evaluasi awal model V2
 IMGSZ = 640                    # kecil = lebih cepat di CPU
 UKURAN_FRAME = (640, 480)        # ukuran proses deteksi
@@ -106,7 +106,7 @@ def validasi_model_kendaraan(model):
     if nama is None:
         raise RuntimeError(
             "Model YOLO tidak menyediakan daftar nama kelas. "
-            "Periksa MODEL_PATH dan pastikan suki.pt merupakan bobot YOLO yang valid."
+            "Periksa MODEL_PATH dan pastikan antytet.pt merupakan bobot YOLO yang valid."
         )
 
     try:
@@ -133,7 +133,7 @@ def validasi_model_kendaraan(model):
             raise RuntimeError(
                 f"Model pada {MODEL_PATH!r} tidak cocok dengan konfigurasi 8 kelas. "
                 f"Kelas indeks {indeks} diharapkan {nama_yang_diharapkan!r}, tetapi ditemukan {aktual!r}. "
-                "Pastikan suki.pt adalah hasil Training V2 dengan urutan kelas yang benar."
+                "Pastikan antytet.pt adalah hasil Training V2 dengan urutan kelas yang benar."
             )
 
 # ROI per lajur (pecahan frame): area antrean di depan kamera. SESUAIKAN per kamera.

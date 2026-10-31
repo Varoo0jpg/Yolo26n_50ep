@@ -560,20 +560,8 @@ class TrafficGUI(ctk.CTk):
         )
         self.lbl_status_audio.pack(pady=(2, 7))
 
-        # Baris tepat di bawah Audio Confidence dipakai untuk tabel penelitian.
-
-        # Area ini disiapkan untuk grafik yang dikembangkan terpisah.
-        f_suara2 = ctk.CTkFrame(self, fg_color=HEX_DARK_BG, border_width=1)
-        f_suara2.grid(row=2, column=1, sticky="nsew", padx=4, pady=4)
-        ctk.CTkLabel(
-            f_suara2,
-            text="[ Area Grafik Analisis ]\n(Dikembangkan terpisah)",
-            text_color="#5dade2",
-        ).pack(expand=True)
-
-        f_akustik2 = ctk.CTkFrame(self, fg_color="#151a21")
-        f_akustik2.grid(row=3, column=1, sticky="nsew", padx=4, pady=4)
-        ctk.CTkLabel(f_akustik2, text="Data Akustik 2", text_color="gray").pack(expand=True)
+        # Kolom ini sengaja dikosongkan pada baris input lajur.
+        # Panel Data Penelitian ditempatkan pada area bawah (row 2-3).
 
         # --- KOLOM 2 & 3: BLOK MONITOR KAMERA & DATA INPUT LAJUR ---
         self.kumpulan_panel = {}
@@ -622,9 +610,9 @@ class TrafficGUI(ctk.CTk):
     # PANEL DATA PENELITIAN
     # -----------------------------------------------------------
     def bangun_panel_penelitian(self):
-        """Tabel penelitian ringkas tepat di bawah Audio Confidence."""
+        """Tabel penelitian utama pada area besar di bawah Audio Confidence."""
         panel = ctk.CTkFrame(self, fg_color="#151a21", border_width=1)
-        panel.grid(row=1, column=1, sticky="nsew", padx=4, pady=4)
+        panel.grid(row=2, column=1, rowspan=2, sticky="nsew", padx=4, pady=4)
         panel.grid_columnconfigure(0, weight=1)
         panel.grid_rowconfigure(2, weight=1)
 
@@ -666,36 +654,55 @@ class TrafficGUI(ctk.CTk):
         table_frame.grid_rowconfigure(0, weight=1)
         table_frame.grid_columnconfigure(0, weight=1)
 
-        # Tampilan dibuat ringkas agar muat di kolom Audio Confidence.
-        # Delapan kelas tetap direkam lengkap dan tersedia di CSV mentah.
+        # Tabel utama menampilkan variabel inti dan seluruh kelas kendaraan.
+        # Kolom dapat digeser horizontal; CSV mentah tetap menjadi sumber data lengkap.
         self.research_columns = (
-            "time", "lane", "data_source", "total_vehicles",
-            "weighted_score", "signal_phase", "active_lane"
+            "time", "lane", "data_source",
+            "Ambulance", "Bus", "Car", "Fire engine",
+            "Military", "Motorcycle", "Police car", "Truck",
+            "total_vehicles", "weighted_score", "signal_phase",
+            "active_lane", "green_remaining_seconds", "mode"
         )
         self.research_tree = ttk.Treeview(
-            table_frame, columns=self.research_columns, show="headings", height=2
+            table_frame, columns=self.research_columns, show="headings", height=12
         )
         headings = {
-            "time": ("Waktu", 62),
-            "lane": ("Lajur", 48),
-            "data_source": ("Sumber", 52),
-            "total_vehicles": ("Total", 43),
-            "weighted_score": ("Skor", 55),
-            "signal_phase": ("Fase", 48),
-            "active_lane": ("Hijau", 48),
+            "time": ("Waktu", 78),
+            "lane": ("Lajur", 70),
+            "data_source": ("Sumber", 72),
+            "Ambulance": ("Ambulance", 82),
+            "Bus": ("Bus", 55),
+            "Car": ("Car", 55),
+            "Fire engine": ("Fire engine", 82),
+            "Military": ("Military", 72),
+            "Motorcycle": ("Motorcycle", 88),
+            "Police car": ("Police car", 82),
+            "Truck": ("Truck", 58),
+            "total_vehicles": ("Total", 60),
+            "weighted_score": ("Skor berbobot", 92),
+            "signal_phase": ("Fase", 75),
+            "active_lane": ("Lajur hijau", 82),
+            "green_remaining_seconds": ("Sisa hijau (dtk)", 100),
+            "mode": ("Mode", 75),
         }
         for col, (label, width) in headings.items():
             self.research_tree.heading(col, text=label)
             self.research_tree.column(
-                col, width=width, minwidth=40, anchor="center", stretch=False
+                col, width=width, minwidth=45, anchor="center", stretch=False
             )
 
         yscroll = ttk.Scrollbar(
             table_frame, orient="vertical", command=self.research_tree.yview
         )
-        self.research_tree.configure(yscrollcommand=yscroll.set)
+        xscroll = ttk.Scrollbar(
+            table_frame, orient="horizontal", command=self.research_tree.xview
+        )
+        self.research_tree.configure(
+            yscrollcommand=yscroll.set, xscrollcommand=xscroll.set
+        )
         self.research_tree.grid(row=0, column=0, sticky="nsew")
         yscroll.grid(row=0, column=1, sticky="ns")
+        xscroll.grid(row=1, column=0, sticky="ew")
 
     def toggle_research_recording(self):
         self.research_recording = not self.research_recording

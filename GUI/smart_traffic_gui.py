@@ -374,7 +374,7 @@ class TrafficGUI(ctk.CTk):
         # Setup Window Utama Aplikasi
         self.title("Smart Traffic Control System - Deteksi Kamera")
         self.geometry("1550x1000")
-        self.minsize(1280, 850)
+        self.minsize(1450, 900)
         ctk.set_appearance_mode("Dark")
         ctk.set_default_color_theme("blue")
 
@@ -407,13 +407,13 @@ class TrafficGUI(ctk.CTk):
         self.grid_columnconfigure(2, weight=1)               # Kolom Kamera & Data
         self.grid_columnconfigure(3, weight=1)
 
-        # Baris kamera atas/bawah dibuat seragam; baris panel input atas/bawah
-        # juga seragam sehingga pasangan panel tidak berubah ukuran.
-        self.grid_rowconfigure(0, weight=3, minsize=180, uniform="camera_rows")
-        self.grid_rowconfigure(1, weight=2, minsize=160, uniform="input_rows")
-        self.grid_rowconfigure(2, weight=3, minsize=180, uniform="camera_rows")
-        self.grid_rowconfigure(3, weight=2, minsize=160, uniform="input_rows")
-        self.grid_rowconfigure(4, weight=3, minsize=210)
+        # Pertahankan proporsi layout asli Lampiu:
+        # dua baris CCTV sama tinggi; dua baris input menjadi strip pendek.
+        # Dengan lebar jendela 1550 px, panel CCTV mendekati bentuk persegi.
+        self.grid_rowconfigure(0, weight=1, minsize=240, uniform="camera_rows")
+        self.grid_rowconfigure(1, weight=0, minsize=120, uniform="input_rows")
+        self.grid_rowconfigure(2, weight=1, minsize=240, uniform="camera_rows")
+        self.grid_rowconfigure(3, weight=0, minsize=120, uniform="input_rows")
         self.grid_columnconfigure(2, weight=1, uniform="camera_columns")
         self.grid_columnconfigure(3, weight=1, uniform="camera_columns")
 
@@ -447,7 +447,7 @@ class TrafficGUI(ctk.CTk):
     def bangun_panel_kontrol_kiri(self):
         """Membangun bilah kendali simulasi di area sebelah kiri."""
         panel_kiri = ctk.CTkFrame(self, width=340, corner_radius=0, fg_color="#1e1e1e")
-        panel_kiri.grid(row=0, column=0, rowspan=5, sticky="nsew", padx=5, pady=5)
+        panel_kiri.grid(row=0, column=0, rowspan=4, sticky="nsew", padx=5, pady=5)
 
         ctk.CTkLabel(panel_kiri, text="PANEL KENDALI UTAMA", font=("Arial", 16, "bold"), text_color="#FFCC00").pack(pady=15)
 
@@ -560,9 +560,7 @@ class TrafficGUI(ctk.CTk):
         )
         self.lbl_status_audio.pack(pady=(2, 7))
 
-        f_akustik1 = ctk.CTkFrame(self, fg_color="#151a21")
-        f_akustik1.grid(row=1, column=1, sticky="nsew", padx=4, pady=4)
-        ctk.CTkLabel(f_akustik1, text="Data Akustik 1", text_color="gray").pack(expand=True)
+        # Baris tepat di bawah Audio Confidence dipakai untuk tabel penelitian.
 
         # Area ini disiapkan untuk grafik yang dikembangkan terpisah.
         f_suara2 = ctk.CTkFrame(self, fg_color=HEX_DARK_BG, border_width=1)
@@ -626,7 +624,7 @@ class TrafficGUI(ctk.CTk):
     def bangun_panel_penelitian(self):
         """Tabel observasi langsung dan ekspor data untuk analisis/paper."""
         panel = ctk.CTkFrame(self, fg_color="#151a21", border_width=1)
-        panel.grid(row=4, column=1, columnspan=3, sticky="nsew", padx=4, pady=4)
+        panel.grid(row=1, column=1, sticky="nsew", padx=4, pady=4)
         panel.grid_columnconfigure(0, weight=1)
         panel.grid_rowconfigure(1, weight=1)
 
@@ -670,29 +668,23 @@ class TrafficGUI(ctk.CTk):
         table_frame.grid_rowconfigure(0, weight=1)
         table_frame.grid_columnconfigure(0, weight=1)
 
+        # Tampilan ringkas agar tabel muat tepat di bawah Audio Confidence.
+        # Semua detail 8 kelas tetap disimpan dan diekspor ke CSV mentah.
         self.research_columns = (
-            "timestamp", "lane", "data_source", *BOBOT_KENDARAAN.keys(),
-            "total_vehicles", "weighted_score", "signal_phase", "active_lane"
+            "time", "lane", "data_source", "total_vehicles",
+            "weighted_score", "signal_phase", "active_lane"
         )
         self.research_tree = ttk.Treeview(
             table_frame, columns=self.research_columns, show="headings", height=5
         )
         headings = {
-            "timestamp": ("Waktu", 145),
-            "lane": ("Lajur", 75),
-            "data_source": ("Sumber", 75),
-            "Ambulance": ("Ambulance", 85),
-            "Bus": ("Bus", 60),
-            "Car": ("Car", 60),
-            "Fire engine": ("Fire engine", 90),
-            "Military": ("Military", 75),
-            "Motorcycle": ("Motorcycle", 90),
-            "Police car": ("Police car", 90),
-            "Truck": ("Truck", 65),
-            "total_vehicles": ("Total", 65),
-            "weighted_score": ("Skor berbobot", 100),
-            "signal_phase": ("Fase", 70),
-            "active_lane": ("Lajur hijau", 85),
+            "time": ("Waktu", 65),
+            "lane": ("Lajur", 52),
+            "data_source": ("Sumber", 55),
+            "total_vehicles": ("Total", 45),
+            "weighted_score": ("Skor", 62),
+            "signal_phase": ("Fase", 48),
+            "active_lane": ("Hijau", 55),
         }
         for col, (label, width) in headings.items():
             self.research_tree.heading(col, text=label)
@@ -730,7 +722,7 @@ class TrafficGUI(ctk.CTk):
     def capture_research_sample(self):
         """Ambil snapshot setiap detik untuk setiap lajur saat perekaman aktif."""
         if self.research_recording and hasattr(self, "kumpulan_panel"):
-            stamp = datetime.now().astimezone().isoformat(timespec="seconds")
+            now = datetime.now().astimezone()\n            stamp = now.isoformat(timespec="seconds")
             for lajur in DAFTAR_LAJUR:
                 panel = self.kumpulan_panel[lajur]
                 counts = {}

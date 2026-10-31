@@ -9,6 +9,8 @@ GUI ini diadaptasi dari aplikasi kamera pada repositori `Lampiu` dan diselaraska
 - Validasi jumlah serta urutan kelas model sebelum inferensi.
 - Simulasi fase lampu hijau/kuning dan mode otomatis/manual.
 - Panel data penelitian dengan pencatatan snapshot per detik untuk setiap lajur.
+- Tabel penelitian ringkas ditempatkan tepat di bawah Audio Confidence pada kolom yang sama; tidak ada panel/baris baru.
+- Empat panel CCTV mempertahankan susunan dua baris seperti GUI Lampiu, dengan tinggi panel atas dan bawah disamakan dan proporsi mendekati persegi.
 - Ekspor data observasi mentah dan ringkasan statistik per lajur ke CSV.
 
 ## Struktur file yang diharapkan
@@ -44,7 +46,7 @@ Ubah dictionary `SUMBER_KAMERA` di bagian konfigurasi. Nilai yang didukung:
 
 ## Data penelitian
 
-Klik **Mulai Rekam** untuk mengambil snapshot setiap 1 detik pada masing-masing lajur. Setiap baris adalah satu snapshot, bukan identitas kendaraan unik. Karena itu, kolom total menunjukkan jumlah objek yang terlihat pada snapshot tersebut, bukan jumlah kendaraan unik selama keseluruhan sesi.
+Klik **Rekam** pada tabel tepat di bawah Audio Confidence untuk mengambil snapshot setiap 1 detik pada masing-masing lajur. Tabel GUI menampilkan ringkasan waktu, lajur, sumber, total kendaraan, skor, fase, dan lajur hijau; seluruh hitungan 8 kelas tetap disimpan dalam CSV mentah. Setiap baris adalah satu snapshot, bukan identitas kendaraan unik. Karena itu, kolom total menunjukkan jumlah objek yang terlihat pada snapshot tersebut, bukan jumlah kendaraan unik selama keseluruhan sesi.
 
 - **Ekspor Data Mentah** menghasilkan seluruh snapshot beserta waktu, lajur, jumlah tiap kelas, total objek, skor berbobot, dan status lampu.
 - **Ekspor Ringkasan Paper** menghasilkan statistik per lajur: jumlah sampel, durasi observasi, rerata, simpangan baku, nilai maksimum, dan rerata/maksimum tiap kelas.

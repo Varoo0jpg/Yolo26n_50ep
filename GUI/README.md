@@ -15,15 +15,15 @@ GUI ini diadaptasi dari aplikasi kamera pada repositori `Lampiu` dan diselaraska
 
 ```text
 repository/
-├── GUI/
-│   ├── smart_traffic_gui.py
-│   ├── requirements.txt
-│   └── README.md
-└── weights/
-    └── best.pt
+├── Coba/
+│   └── antytet.pt
+└── GUI/
+    ├── smart_traffic_gui.py
+    ├── requirements.txt
+    └── README.md
 ```
 
-Jika checkpoint tidak tersedia pada `weights/best.pt`, GUI akan meminta pengguna memilih file `.pt` saat dijalankan. Lokasi khusus juga dapat ditentukan melalui variabel lingkungan `SMART_TRAFFIC_MODEL`.
+GUI menggunakan `Coba/antytet.pt` sebagai checkpoint default. Jika file tidak ditemukan, GUI akan meminta pengguna memilih file `.pt` saat dijalankan. Lokasi khusus juga dapat ditentukan melalui variabel lingkungan `SMART_TRAFFIC_MODEL`.
 
 ## Instalasi dan menjalankan
 

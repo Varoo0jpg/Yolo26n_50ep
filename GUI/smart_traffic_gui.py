@@ -642,10 +642,11 @@ class TrafficGUI(ctk.CTk):
 
         controls = ctk.CTkFrame(panel, fg_color="transparent")
         controls.grid(row=1, column=0, sticky="ew", padx=4, pady=2)
-        ctk.CTkButton(
+        self.btn_research_record = ctk.CTkButton(
             controls, text="Rekam", width=62, height=23,
             fg_color="#27864b", command=self.toggle_research_recording
-        ).pack(side="left", padx=2)
+        )
+        self.btn_research_record.pack(side="left", padx=2)
         ctk.CTkButton(
             controls, text="CSV Mentah", width=88, height=23,
             command=self.export_research_raw

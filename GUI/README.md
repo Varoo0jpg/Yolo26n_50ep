@@ -10,7 +10,7 @@ GUI ini diadaptasi dari aplikasi kamera pada repositori `Lampiu` dan diselaraska
 - Simulasi fase lampu hijau/kuning dan mode otomatis/manual.
 - Panel data penelitian dengan pencatatan snapshot per detik untuk setiap lajur.
 - Audio Confidence tetap berada di panel atas. Tabel Data Penelitian mengisi area besar di bawahnya dengan menggabungkan area grafik dan placeholder Data Akustik 2; tidak ada tabel putih tambahan di baris input lajur.
-- Empat panel CCTV mempertahankan susunan dua baris seperti GUI Lampiu, dengan tinggi panel atas dan bawah disamakan dan proporsi mendekati persegi.
+- Geometri empat panel CCTV dan konfigurasi grid dikembalikan ke pengaturan asli GUI Lampiu; perubahan hanya memindahkan panel Data Penelitian ke area bawah Audio Confidence.
 - Ekspor data observasi mentah dan ringkasan statistik per lajur ke CSV.
 
 ## Struktur file yang diharapkan

@@ -1,0 +1,5 @@
+﻿Threshold,Frames,Detections,Detected Frames,Empty Frames,Mean Confidence,Ambulance,Bus,Car,Fire engine,Military,Motorcycle,Police car,Truck
+conf025,307,429,307,0,0.8073,109,1,239,0,0,0,6,74
+conf035,305,414,305,0,0.826,109,0,227,0,0,0,5,73
+conf045,305,397,305,0,0.8444,108,0,219,0,0,0,2,68
+conf055,300,382,300,0,0.858,106,0,212,0,0,0,1,63

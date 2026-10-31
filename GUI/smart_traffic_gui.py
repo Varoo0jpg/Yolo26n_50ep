@@ -54,7 +54,7 @@ HEX_DARK_BG = "#1e2530"
 # ---------------- [BARU] Konfigurasi kamera & deteksi ----------------
 # Sumber tiap lajur: indeks kamera (0,1,2,..), path file video, atau None (input manual).
 # Default: hanya kamera laptop untuk lajur Utara.
-SUMBER_KAMERA = {"Utara": "https://www.youtube.com/watch?v=Ck45cxJAh-s", "Timur": "https://www.youtube.com/live/UUj6fNons8E?si=GLkVVlcxD_hAjmLP", "Selatan": "https://www.youtube.com/live/BdPvBNLy5kc?si=tm8jdiBL6TW7jkJy", "Barat": "https://www.youtube.com/watch?v=D_R5EpqQIpo"}
+SUMBER_KAMERA = {"Utara": "https://www.youtube.com/live/MxlqkY5SVeU?si=laSrcwHsgZBzgDkT", "Timur": "https://www.youtube.com/live/rvosEdHX190?si=8M28QIj2SgaTv1qh", "Selatan": "https://www.youtube.com/live/AQd-p5hFtQo?si=0hXsDQo-l-_YuIjj", "Barat": "https://www.youtube.com/watch?v=D_R5EpqQIpo"}
 # Contoh 4 kamera USB:
 # SUMBER_KAMERA = {"Utara": 0, "Timur": 1, "Selatan": 2, "Barat": 3}
 # Contoh 4 file video:
@@ -607,8 +607,11 @@ class TrafficGUI(ctk.CTk):
     # -----------------------------------------------------------
     def bangun_panel_penelitian(self):
         """Tabel penelitian utama pada area besar di bawah Audio Confidence."""
-        panel = ctk.CTkFrame(self, fg_color="#151a21", border_width=1)
+        # Panel mengisi area bawah tanpa meminta tinggi tambahan dari grid utama.
+        # Ini menjaga ukuran empat panel CCTV tetap seperti layout referensi.
+        panel = ctk.CTkFrame(self, width=1, height=1, fg_color="#151a21", border_width=1)
         panel.grid(row=2, column=1, rowspan=2, sticky="nsew", padx=4, pady=4)
+        panel.grid_propagate(False)
         panel.grid_columnconfigure(0, weight=1)
         panel.grid_rowconfigure(2, weight=1)
 

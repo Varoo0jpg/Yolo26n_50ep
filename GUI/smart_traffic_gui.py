@@ -622,86 +622,79 @@ class TrafficGUI(ctk.CTk):
     # PANEL DATA PENELITIAN
     # -----------------------------------------------------------
     def bangun_panel_penelitian(self):
-        """Tabel observasi langsung dan ekspor data untuk analisis/paper."""
+        """Tabel penelitian ringkas tepat di bawah Audio Confidence."""
         panel = ctk.CTkFrame(self, fg_color="#151a21", border_width=1)
         panel.grid(row=1, column=1, sticky="nsew", padx=4, pady=4)
         panel.grid_columnconfigure(0, weight=1)
-        panel.grid_rowconfigure(1, weight=1)
+        panel.grid_rowconfigure(2, weight=1)
 
         header = ctk.CTkFrame(panel, fg_color="transparent")
-        header.grid(row=0, column=0, sticky="ew", padx=8, pady=(6, 2))
+        header.grid(row=0, column=0, sticky="ew", padx=6, pady=(3, 0))
         ctk.CTkLabel(
-            header, text="DATA PENELITIAN — OBSERVASI KENDARAAN",
-            font=("Arial", 13, "bold"), text_color="#FFCC00"
-        ).pack(side="left", padx=(2, 10))
-
+            header, text="DATA PENELITIAN",
+            font=("Arial", 11, "bold"), text_color="#FFCC00"
+        ).pack(side="left")
         self.lbl_research_status = ctk.CTkLabel(
-            header, text="Perekaman nonaktif | 0 sampel",
-            font=("Arial", 10), text_color="#aab7c4"
+            header, text="Nonaktif | 0 sampel",
+            font=("Arial", 9), text_color="#aab7c4"
         )
-        self.lbl_research_status.pack(side="left", padx=6)
+        self.lbl_research_status.pack(side="right")
 
-        self.btn_research_record = ctk.CTkButton(
-            header, text="Mulai Rekam", width=105, height=28,
+        controls = ctk.CTkFrame(panel, fg_color="transparent")
+        controls.grid(row=1, column=0, sticky="ew", padx=4, pady=2)
+        ctk.CTkButton(
+            controls, text="Rekam", width=62, height=23,
             fg_color="#27864b", command=self.toggle_research_recording
-        )
-        self.btn_research_record.pack(side="right", padx=3)
-
+        ).pack(side="left", padx=2)
         ctk.CTkButton(
-            header, text="Ekspor Ringkasan Paper", width=160, height=28,
-            command=self.export_research_summary
-        ).pack(side="right", padx=3)
-
-        ctk.CTkButton(
-            header, text="Ekspor Data Mentah", width=140, height=28,
+            controls, text="CSV Mentah", width=88, height=23,
             command=self.export_research_raw
-        ).pack(side="right", padx=3)
-
+        ).pack(side="left", padx=2)
         ctk.CTkButton(
-            header, text="Bersihkan", width=85, height=28,
+            controls, text="CSV Ringkasan", width=100, height=23,
+            command=self.export_research_summary
+        ).pack(side="left", padx=2)
+        ctk.CTkButton(
+            controls, text="Reset", width=52, height=23,
             fg_color="#7f3b3b", hover_color="#642d2d",
             command=self.clear_research_records
-        ).pack(side="right", padx=3)
+        ).pack(side="right", padx=2)
 
         table_frame = ctk.CTkFrame(panel, fg_color="transparent")
-        table_frame.grid(row=1, column=0, sticky="nsew", padx=8, pady=(2, 7))
+        table_frame.grid(row=2, column=0, sticky="nsew", padx=5, pady=(1, 3))
         table_frame.grid_rowconfigure(0, weight=1)
         table_frame.grid_columnconfigure(0, weight=1)
 
-        # Tampilan ringkas agar tabel muat tepat di bawah Audio Confidence.
-        # Semua detail 8 kelas tetap disimpan dan diekspor ke CSV mentah.
+        # Tampilan dibuat ringkas agar muat di kolom Audio Confidence.
+        # Delapan kelas tetap direkam lengkap dan tersedia di CSV mentah.
         self.research_columns = (
             "time", "lane", "data_source", "total_vehicles",
             "weighted_score", "signal_phase", "active_lane"
         )
         self.research_tree = ttk.Treeview(
-            table_frame, columns=self.research_columns, show="headings", height=5
+            table_frame, columns=self.research_columns, show="headings", height=2
         )
         headings = {
-            "time": ("Waktu", 65),
-            "lane": ("Lajur", 52),
-            "data_source": ("Sumber", 55),
-            "total_vehicles": ("Total", 45),
-            "weighted_score": ("Skor", 62),
+            "time": ("Waktu", 62),
+            "lane": ("Lajur", 48),
+            "data_source": ("Sumber", 52),
+            "total_vehicles": ("Total", 43),
+            "weighted_score": ("Skor", 55),
             "signal_phase": ("Fase", 48),
-            "active_lane": ("Hijau", 55),
+            "active_lane": ("Hijau", 48),
         }
         for col, (label, width) in headings.items():
             self.research_tree.heading(col, text=label)
-            self.research_tree.column(col, width=width, minwidth=55, anchor="center", stretch=False)
+            self.research_tree.column(
+                col, width=width, minwidth=40, anchor="center", stretch=False
+            )
 
-        yscroll = ttk.Scrollbar(table_frame, orient="vertical", command=self.research_tree.yview)
-        xscroll = ttk.Scrollbar(table_frame, orient="horizontal", command=self.research_tree.xview)
-        self.research_tree.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+        yscroll = ttk.Scrollbar(
+            table_frame, orient="vertical", command=self.research_tree.yview
+        )
+        self.research_tree.configure(yscrollcommand=yscroll.set)
         self.research_tree.grid(row=0, column=0, sticky="nsew")
         yscroll.grid(row=0, column=1, sticky="ns")
-        xscroll.grid(row=1, column=0, sticky="ew")
-
-        ctk.CTkLabel(
-            panel,
-            text="Satu baris = satu snapshot per lajur setiap 1 detik; angka bukan jumlah kendaraan unik.",
-            font=("Arial", 9), text_color="#aab7c4"
-        ).grid(row=2, column=0, sticky="w", padx=10, pady=(0, 5))
 
     def toggle_research_recording(self):
         self.research_recording = not self.research_recording

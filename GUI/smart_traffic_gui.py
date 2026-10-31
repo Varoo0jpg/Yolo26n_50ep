@@ -70,7 +70,7 @@ def resource_path(nama):
 
 # Checkpoint baseline pada repositori Yolo26n_50ep.
 # Struktur yang diharapkan: GUI/smart_traffic_gui.py dan YOLO26n_50ep/weights/best.pt.
-MODEL_PATH = os.path.abspath(resource_path(os.path.join("..", "YOLO26n_50ep", "weights", "best.pt")))
+MODEL_PATH = os.path.abspath(resource_path(os.path.join("..", "weights", "best.pt")))
 CONF = 0.20  # Baseline confidence untuk evaluasi awal model V2
 IMGSZ = 640                    # kecil = lebih cepat di CPU
 UKURAN_FRAME = (640, 480)        # ukuran proses deteksi

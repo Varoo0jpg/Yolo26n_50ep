@@ -373,8 +373,7 @@ class TrafficGUI(ctk.CTk):
 
         # Setup Window Utama Aplikasi
         self.title("Smart Traffic Control System - Deteksi Kamera")
-        self.geometry("1550x1000")
-        self.minsize(1450, 900)
+        self.geometry("1450x850")
         ctk.set_appearance_mode("Dark")
         ctk.set_default_color_theme("blue")
 
@@ -407,15 +406,12 @@ class TrafficGUI(ctk.CTk):
         self.grid_columnconfigure(2, weight=1)               # Kolom Kamera & Data
         self.grid_columnconfigure(3, weight=1)
 
-        # Pertahankan proporsi layout asli Lampiu:
-        # dua baris CCTV sama tinggi; dua baris input menjadi strip pendek.
-        # Dengan lebar jendela 1550 px, panel CCTV mendekati bentuk persegi.
-        self.grid_rowconfigure(0, weight=1, minsize=240, uniform="camera_rows")
-        self.grid_rowconfigure(1, weight=0, minsize=120, uniform="input_rows")
-        self.grid_rowconfigure(2, weight=1, minsize=240, uniform="camera_rows")
-        self.grid_rowconfigure(3, weight=0, minsize=120, uniform="input_rows")
-        self.grid_columnconfigure(2, weight=1, uniform="camera_columns")
-        self.grid_columnconfigure(3, weight=1, uniform="camera_columns")
+        # Pertahankan konfigurasi grid kamera PERSIS seperti GUI referensi Lampiu.
+        # Hanya panel Data Penelitian di kolom tengah yang dipindahkan.
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=0, minsize=120)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=0, minsize=120)
 
         # Bangun Komponen Tampilan
         self.bangun_panel_kontrol_kiri()
@@ -664,7 +660,7 @@ class TrafficGUI(ctk.CTk):
             "active_lane", "green_remaining_seconds", "mode"
         )
         self.research_tree = ttk.Treeview(
-            table_frame, columns=self.research_columns, show="headings", height=12
+            table_frame, columns=self.research_columns, show="headings", height=9
         )
         headings = {
             "time": ("Waktu", 78),

@@ -70,7 +70,7 @@ def resource_path(nama):
 
 # Checkpoint baseline pada repositori Yolo26n_50ep.
 # Struktur yang diharapkan: GUI/smart_traffic_gui.py dan YOLO26n_50ep/weights/best.pt.
-MODEL_PATH = os.path.abspath(resource_path(os.path.join("..", "weights", "best.pt")))
+MODEL_PATH = os.environ.get("SMART_TRAFFIC_MODEL", os.path.abspath(resource_path(os.path.join("..", "weights", "best.pt"))))
 CONF = 0.20  # Baseline confidence untuk evaluasi awal model V2
 IMGSZ = 640                    # kecil = lebih cepat di CPU
 UKURAN_FRAME = (640, 480)        # ukuran proses deteksi
@@ -368,6 +368,7 @@ class PanelInputLajur(ctk.CTkFrame):
 # ===============================================================
 class TrafficGUI(ctk.CTk):
     def __init__(self):
+        global MODEL_PATH
         super().__init__()
 
         # Setup Window Utama Aplikasi
@@ -420,6 +421,15 @@ class TrafficGUI(ctk.CTk):
         self.bangun_panel_kontrol_kiri()
         self.bangun_grid_simulasi_kanan()
         self.bangun_panel_penelitian()
+
+        # Jika bobot tidak tersedia di lokasi default/env, pilih checkpoint secara manual.
+        if not os.path.isfile(MODEL_PATH):
+            selected_model = filedialog.askopenfilename(
+                title="Pilih checkpoint YOLO26n 8 kelas",
+                filetypes=[("YOLO checkpoint", "*.pt"), ("Semua file", "*.*")]
+            )
+            if selected_model:
+                MODEL_PATH = selected_model
 
         # [BARU] Jalankan deteksi kamera
         self.mulai_deteksi()

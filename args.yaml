@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolo26n.pt
-data: /content/ReZero/data_cloud.yaml
+data: /content/Adalah/data_cloud.yaml
 epochs: 50
 time: null
 patience: 15
